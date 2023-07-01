@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ggnorthcarolina
+# ggchile
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-The goal of ggnorthcarolina is to …
+The goal of ggchile is to …
 
 ## Installation
 
-You can install the development version of ggnorthcarolina from
+You can install the development version of ggchile from
 [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("EvaMaeRey/ggnorthcarolina")
+devtools::install_github("EvaMaeRey/ggchile")
 ```
 
 ## Example
@@ -24,7 +24,7 @@ devtools::install_github("EvaMaeRey/ggnorthcarolina")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(ggnorthcarolina)
+library(ggchile)
 ## basic example code
 ```
 
@@ -34,7 +34,7 @@ You can include R chunks like so:
 ``` r
 library(ggplot2)
 ggplot() +
-  stamp_sf_countynorthcarolina(data = cars)
+  stamp_sf_regionchile(data = cars)
 ```
 
 <img src="man/figures/README-cars-1.png" width="100%" />
@@ -42,28 +42,27 @@ ggplot() +
 ``` r
 
 library(ggplot2)
-northcarolina_flat %>%
+chile_region_flat %>%
 ggplot() +
-aes(fips = FIPS) +
-geom_sf_countynorthcarolina()
-#> Joining with `by = join_by(fips)`
+aes(region_codigo = region_codigo) +
+geom_sf_regionchile()
+#> Joining with `by = join_by(region_codigo)`
 ```
 
 <img src="man/figures/README-cars-2.png" width="100%" />
 
 ``` r
 
-
-northcarolina_flat %>%
+chile_region_flat %>%
 ggplot() +
-aes(fips = FIPS, fill = SID74,
-    label = paste0(NAME, "\n", SID74)) +
-geom_sf_countynorthcarolina() +
-geom_label_northcarolina_county(lineheight = .7,
+aes(region_codigo = region_codigo, fill = region_codigo,
+    label = region_codigo) +
+geom_sf_regionchile() +
+geom_label_chile_region(lineheight = .7,
 size = 2, check_overlap= TRUE,
 color = "oldlace")
-#> Joining with `by = join_by(fips)`
-#> Joining with `by = join_by(fips)`
+#> Joining with `by = join_by(region_codigo)`
+#> Joining with `by = join_by(region_codigo)`
 ```
 
 <img src="man/figures/README-cars-3.png" width="100%" />

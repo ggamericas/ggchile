@@ -2,47 +2,46 @@
 #'
 #' @param data
 #' @param scales
-#' @param county
+#' @param region
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' library(dplyr)
-#' #northcarolina_flat |> rename(fips = FIPS) |> compute_county_northcarolina() |> head() |> str()
-#' #northcarolina_flat |> rename(fips = FIPS) |> compute_county_northcarolina(keep_county = "Ashe")
-compute_county_northcarolina_stamp <- function(data, scales, keep_county = NULL){
+#' #chile_region_flat |> rename(fips = FIPS) |> compute_region_chile() |> head() |> str()
+#' #chile_region_flat |> rename(fips = FIPS) |> compute_region_chile(keep_region = "Ashe")
+compute_region_chile_stamp <- function(data, scales, keep_region = NULL){
 
-  reference_filtered <- northcarolina_county_reference
+  reference_filtered <- chile_region_reference
   #
-  if(!is.null(keep_county)){
+  if(!is.null(keep_region)){
 
-    keep_county %>% tolower() -> keep_county
+    keep_region %>% tolower() -> keep_region
 
     reference_filtered %>%
-      dplyr::filter(.data$county_name %>%
+      dplyr::filter(.data$region_name %>%
                       tolower() %in%
-                      keep_county) ->
+                      keep_region) ->
       reference_filtered
 
   }
 
   reference_filtered %>%
-    dplyr::select("fips", "geometry", "xmin",
+    dplyr::select("region_codigo", "geometry", "xmin",
                   "xmax", "ymin", "ymax") ->
     reference_filtered
 
 
   reference_filtered %>%
-    dplyr::mutate(group = -1) %>%
-    dplyr::select(-fips)
+    dplyr::mutate(group = -1)
 
 }
 
 
-StatCountynorthcarolinastamp <- ggplot2::ggproto(`_class` = "StatCountynorthcarolinastamp",
+Statregionchilestamp <- ggplot2::ggproto(`_class` = "Statregionchilestamp",
                                `_inherit` = ggplot2::Stat,
-                               compute_panel = compute_county_northcarolina_stamp,
+                               compute_panel = compute_region_chile_stamp,
                                default_aes = ggplot2::aes(geometry =
                                                             ggplot2::after_stat(geometry)))
 
@@ -64,8 +63,8 @@ StatCountynorthcarolinastamp <- ggplot2::ggproto(`_class` = "StatCountynorthcaro
 #' @examples
 #' library(ggplot2)
 #' ggplot() +
-#' stamp_sf_countynorthcarolina()
-stamp_sf_countynorthcarolina <- function(
+#' stamp_sf_regionchile()
+stamp_sf_regionchile <- function(
                                  mapping = NULL,
                                  data = reference_full,
                                  position = "identity",
@@ -77,7 +76,7 @@ stamp_sf_countynorthcarolina <- function(
                                  ) {
 
                                  c(ggplot2::layer_sf(
-                                   stat = StatCountynorthcarolinastamp,  # proto object from step 2
+                                   stat = Statregionchilestamp,  # proto object from step 2
                                    geom = ggplot2::GeomSf,  # inherit other behavior
                                    data = data,
                                    mapping = mapping,

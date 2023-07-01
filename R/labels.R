@@ -1,5 +1,5 @@
 # step 00 reference data
-# northcarolina_county_centers <- data.frame(     x   =  -81.49496,   y = 36.42112,  county_name = "Ashe",   fips = "37009")
+# chile_region_centers <- data.frame(     x   =  -81.49496,   y = 36.42112,  region_name = "Ashe",   fips = "37009")
 
 
 # step 1
@@ -7,33 +7,33 @@
 #'
 #' @param data
 #' @param scales
-#' @param keep_county
+#' @param keep_region
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' northcarolina_flat |>
-#'   dplyr::rename(fips = FIPS) |>
-#'   dplyr::rename(label = NAME) |>
-#'   compute_panel_county_centers()
-compute_panel_county_centers <- function(data,
+#' #chile_region_flat |>
+#' #  dplyr::rename(fips = FIPS) |>
+#' #  dplyr::rename(label = NAME) |>
+#' #  compute_panel_region_centers()
+compute_panel_region_centers <- function(data,
                                          scales,
-                                         keep_county = NULL){
+                                         keep_region = NULL){
 
-  northcarolina_county_centers_filtered <- northcarolina_county_centers
+  chile_region_centers_filtered <- chile_region_centers
 
-  if(!is.null(keep_county)){
-    keep_county %>% tolower() -> keep_county
+  if(!is.null(keep_region)){
+    keep_region %>% tolower() -> keep_region
 
-    northcarolina_county_centers_filtered %>%
-      dplyr::filter(.data$county_name %>%
+    chile_region_centers_filtered %>%
+      dplyr::filter(.data$region_name %>%
                       tolower() %in%
-                      keep_county) ->
-      northcarolina_county_centers_filtered}
+                      keep_region) ->
+      chile_region_centers_filtered}
 
   data %>%
-    dplyr::inner_join(northcarolina_county_centers_filtered) %>%
+    dplyr::inner_join(chile_region_centers_filtered) %>%
     dplyr::select(x, y, label)
 
 }
@@ -42,11 +42,11 @@ compute_panel_county_centers <- function(data,
 
 
 # step 2 proto
-StatCountycenters <- ggplot2::ggproto(
+Statregioncenters <- ggplot2::ggproto(
   `_class` = "StatRownumber",
   `_inherit` = ggplot2::Stat,
   # required_aes = c("label"), # for some reason this breaks things... why?
-  compute_panel = compute_panel_county_centers
+  compute_panel = compute_panel_region_centers
 )
 
 #' Title
@@ -64,32 +64,25 @@ StatCountycenters <- ggplot2::ggproto(
 #'
 #' @examples
 #' library(ggplot2)
-#' northcarolina_flat %>%
+#' chile_region_flat %>%
 #'  ggplot() +
-#'  aes(fips = FIPS, label = NAME) +
-#'  geom_label_northcarolina_county()
+#'  aes(region_codigo = region_codigo, label = region_codigo) +
+#'  geom_label_chile_region()
 #'
-#' northcarolina_flat %>%
+#' chile_region_flat %>%
 #'  ggplot() +
-#'  aes(fips = FIPS, label = NAME) +
-#'  geom_sf_countynorthcarolina() +
-#'  geom_label_northcarolina_county()
+#'  aes(region_codigo = region_codigo, label = region_codigo) +
+#'  geom_sf_regionchile() +
+#'  geom_label_chile_region()
 #'
-#'  northcarolina_flat %>%
+#'  chile_region_flat %>%
 #'  ggplot() +
-#'  aes(fips = FIPS, label = SID74, fill = SID74) +
-#'  geom_sf_countynorthcarolina() +
-#'  geom_label_northcarolina_county(color = "oldlace")
+#'  aes(region_codigo = region_codigo, label = region_codigo) +
+#'  geom_sf_regionchile(fill = "navyblue") +
+#'  geom_label_chile_region(color = "oldlace")
 #'
-#'  northcarolina_flat %>%
-#'  ggplot() +
-#'  aes(fips = FIPS, fill = SID74,
-#'      label = paste0(NAME, "\n", SID74)) +
-#'  geom_sf_countynorthcarolina() +
-#'  geom_label_northcarolina_county(lineheight = .7,
-#'  size = 2, check_overlap= TRUE,
-#'  color = "oldlace")
-geom_label_northcarolina_county <- function(
+
+geom_label_chile_region <- function(
   mapping = NULL,
   data = NULL,
   position = "identity",
@@ -97,7 +90,7 @@ geom_label_northcarolina_county <- function(
   show.legend = NA,
   inherit.aes = TRUE, ...) {
   ggplot2::layer(
-    stat = StatCountycenters,  # proto object from Step 2
+    stat = Statregioncenters,  # proto object from Step 2
     geom = ggplot2::GeomText,  # inherit other behavior
     data = data,
     mapping = mapping,

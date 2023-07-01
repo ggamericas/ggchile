@@ -4,38 +4,35 @@
 ###### 0. Read in shape file data  #####
 
 library(sf)
-northcarolina_sf <- st_read(system.file("shape/nc.shp", package="sf"))
+chile_region_sf <- chilemapas::generar_regiones() |>
+  dplyr::rename(region_codigo = codigo_region)
 
 ### save as is if desired #####
-usethis::use_data(northcarolina_sf, overwrite = TRUE)
+usethis::use_data(chile_region_sf, overwrite = TRUE)
 
 
 #### 1, create polygon reference dataframe w xmin, ymin, xmax and ymax and save
-northcarolina_county_reference <- northcarolina_sf |>
+chile_region_reference <- chile_region_sf |>
   ggnc::create_geometries_reference(
-                            id_cols = c(NAME, FIPS)) |>
-  dplyr::rename(county_name = NAME,
-         fips = FIPS)
+                            id_cols = c(region_codigo))
 
-usethis::use_data(northcarolina_county_reference, overwrite = TRUE)
+usethis::use_data(chile_region_reference, overwrite = TRUE)
 
 
 ####### 2. create and save flat file for examples, if desired ####
 
-northcarolina %>%
+chile_region_reference %>%
   sf::st_drop_geometry() ->
-northcarolina_flat
+chile_region_flat
 
-usethis::use_data(northcarolina_flat, overwrite = TRUE)
+usethis::use_data(chile_region_flat, overwrite = TRUE)
 
 ############### 3. create polygon centers and labels reference data frame
 
-# county centers for labeling polygons
+# region centers for labeling polygons
 
-northcarolina_county_centers <- northcarolina_sf |>
-  dplyr::rename(county_name = NAME,
-                fips = FIPS) |>
-  ggnc::prepare_polygon_labeling_data(id_cols = c(county_name, fips))
+chile_region_centers <- chile_region_sf |>
+  ggnc::prepare_polygon_labeling_data(id_cols = c(region_codigo))
 
 
-usethis::use_data(northcarolina_county_centers, overwrite = TRUE)
+usethis::use_data(chile_region_centers, overwrite = TRUE)

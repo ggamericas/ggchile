@@ -12,7 +12,7 @@
 #'   ...
 #' }
 #' @source <https://www.who.int/teams/global-tuberculosis-programme/data>
-"northcarolina_sf"
+"chile_region_sf"
 
 #' World Health Organization TB data
 #'
@@ -28,7 +28,7 @@
 #'   ...
 #' }
 #' @source <https://www.who.int/teams/global-tuberculosis-programme/data>
-"northcarolina_flat"
+"chile_region_flat"
 
 
 #' World Health Organization TB data
@@ -45,7 +45,7 @@
 #'   ...
 #' }
 #' @source <https://www.who.int/teams/global-tuberculosis-programme/data>
-"northcarolina_county_centers"
+"chile_region_centers"
 
 #' World Health Organization TB data
 #'
@@ -61,4 +61,4 @@
 #'   ...
 #' }
 #' @source <https://www.who.int/teams/global-tuberculosis-programme/data>
-"northcarolina_county_reference"
+"chile_region_reference"
