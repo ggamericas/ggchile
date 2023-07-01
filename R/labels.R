@@ -1,5 +1,5 @@
 # step 00 reference data
-# nc_county_centers <- data.frame(     x   =  -81.49496,   y = 36.42112,  county_name = "Ashe",   fips = "37009")
+# northcarolina_county_centers <- data.frame(     x   =  -81.49496,   y = 36.42112,  county_name = "Ashe",   fips = "37009")
 
 
 # step 1
@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#' ggnc::nc_flat |>
+#' northcarolina_flat |>
 #'   dplyr::rename(fips = FIPS) |>
 #'   dplyr::rename(label = NAME) |>
 #'   compute_panel_county_centers()
@@ -21,19 +21,19 @@ compute_panel_county_centers <- function(data,
                                          scales,
                                          keep_county = NULL){
 
-  nc_county_centers_filtered <- nc_county_centers
+  northcarolina_county_centers_filtered <- northcarolina_county_centers
 
   if(!is.null(keep_county)){
     keep_county %>% tolower() -> keep_county
 
-    nc_county_centers_filtered %>%
+    northcarolina_county_centers_filtered %>%
       dplyr::filter(.data$county_name %>%
                       tolower() %in%
                       keep_county) ->
-      nc_county_centers_filtered}
+      northcarolina_county_centers_filtered}
 
   data %>%
-    dplyr::inner_join(nc_county_centers_filtered) %>%
+    dplyr::inner_join(northcarolina_county_centers_filtered) %>%
     dplyr::select(x, y, label)
 
 }
@@ -64,32 +64,32 @@ StatCountycenters <- ggplot2::ggproto(
 #'
 #' @examples
 #' library(ggplot2)
-#' ggnc::nc_flat %>%
+#' northcarolina_flat %>%
 #'  ggplot() +
 #'  aes(fips = FIPS, label = NAME) +
-#'  geom_label_nc_county()
+#'  geom_label_northcarolina_county()
 #'
-#' ggnc::nc_flat %>%
+#' northcarolina_flat %>%
 #'  ggplot() +
 #'  aes(fips = FIPS, label = NAME) +
-#'  geom_sf_countync() +
-#'  geom_label_nc_county()
+#'  geom_sf_countynorthcarolina() +
+#'  geom_label_northcarolina_county()
 #'
-#'  ggnc::nc_flat %>%
+#'  northcarolina_flat %>%
 #'  ggplot() +
 #'  aes(fips = FIPS, label = SID74, fill = SID74) +
-#'  geom_sf_countync() +
-#'  geom_label_nc_county(color = "oldlace")
+#'  geom_sf_countynorthcarolina() +
+#'  geom_label_northcarolina_county(color = "oldlace")
 #'
-#'  ggnc::nc_flat %>%
+#'  northcarolina_flat %>%
 #'  ggplot() +
 #'  aes(fips = FIPS, fill = SID74,
 #'      label = paste0(NAME, "\n", SID74)) +
-#'  geom_sf_countync() +
-#'  geom_label_nc_county(lineheight = .7,
+#'  geom_sf_countynorthcarolina() +
+#'  geom_label_northcarolina_county(lineheight = .7,
 #'  size = 2, check_overlap= TRUE,
 #'  color = "oldlace")
-geom_label_nc_county <- function(
+geom_label_northcarolina_county <- function(
   mapping = NULL,
   data = NULL,
   position = "identity",

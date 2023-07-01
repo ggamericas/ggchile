@@ -4,27 +4,27 @@
 #'
 #' @param data
 #' @param scales
-#' @param county
+#' @param keep_county
 #'
 #' @return
 #' @export
 #'
 #' @examples
 #' library(dplyr)
-#' #nc_flat |> rename(fips = FIPS) |> compute_county_nc() |> head()
-#' #nc_flat |> rename(fips = FIPS) |> compute_county_nc(county = "Ashe")
-compute_county_nc <- function(data, scales, county = NULL){
+#' #northcarolina_flat |> rename(fips = FIPS) |> compute_county_northcarolina() |> head()
+#' #northcarolina_flat |> rename(fips = FIPS) |> compute_county_northcarolina(keep_county = "Ashe")
+compute_county_northcarolina <- function(data, scales, keep_county = NULL){
 
-  reference_filtered <- reference_full
+  reference_filtered <- northcarolina_county_reference
   #
-  if(!is.null(county)){
+  if(!is.null(keep_county)){
 
-    county %>% tolower() -> county
+    keep_county %>% tolower() -> keep_county
 
     reference_filtered %>%
       dplyr::filter(.data$county_name %>%
                       tolower() %in%
-                      county) ->
+                      keep_county) ->
       reference_filtered
 
   }
@@ -48,9 +48,9 @@ compute_county_nc <- function(data, scales, county = NULL){
 
 ###### Specify ggproto ###############
 
-StatCountync <- ggplot2::ggproto(`_class` = "StatCountync",
+StatCountynorthcarolina <- ggplot2::ggproto(`_class` = "StatCountynorthcarolina",
                                `_inherit` = ggplot2::Stat,
-                               compute_panel = compute_county_nc,
+                               compute_panel = compute_county_northcarolina,
                                default_aes = ggplot2::aes(geometry =
                                                             ggplot2::after_stat(geometry)))
 
@@ -73,11 +73,11 @@ StatCountync <- ggplot2::ggproto(`_class` = "StatCountync",
 #'
 #' @examples
 #' library(ggplot2)
-#' nc_flat %>%
+#' northcarolina_flat %>%
 #' ggplot() +
 #' aes(fips = FIPS) +
-#' geom_sf_countync()
-geom_sf_countync <- function(
+#' geom_sf_countynorthcarolina()
+geom_sf_countynorthcarolina <- function(
                                  mapping = NULL,
                                  data = NULL,
                                  position = "identity",
@@ -89,7 +89,7 @@ geom_sf_countync <- function(
                                  ) {
 
                                  c(ggplot2::layer_sf(
-                                   stat = StatCountync,  # proto object from step 2
+                                   stat = StatCountynorthcarolina,  # proto object from step 2
                                    geom = ggplot2::GeomSf,  # inherit other behavior
                                    data = data,
                                    mapping = mapping,
