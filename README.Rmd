@@ -55,7 +55,7 @@ chile_region_flat %>%
 ggplot() +
 aes(region_codigo = region_codigo, fill = region_codigo,
     label = region_codigo) +
-geom_sf_regionchile() +
+geom_sf_regionchile(linewidth = 0) +
 geom_label_chile_region(lineheight = .7,
 size = 2, check_overlap= TRUE,
 color = "oldlace")
